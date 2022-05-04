@@ -1,0 +1,112 @@
+"""
+Tennis League manager
+"""
+import sqlite3
+#import re
+import toga
+from toga.style import Pack
+from toga.style.pack import COLUMN, ROW, LEFT, RIGHT
+#from Tennis_Funcs import Update_Numbers
+#from Tennis_Funcs import search
+
+class TennisLeague(toga.App):
+
+	def get_players(self, cur):
+		query = "SELECT Name FROM Players"
+		cur.execute(query)
+
+		return cur.fetchall()
+
+	def startup(self):
+		s_DB = "src/tennisleague/Tennis.db"
+
+		conn = sqlite3.connect(s_DB)
+		cur = conn.cursor()
+
+		players = [" ",]
+		t_players = self.get_players(cur)
+
+		for player in t_players:
+			players.append(player[0])
+
+		main_box = toga.Box()
+
+		courtlabel_box = []
+		wcourt_box = []
+		lcourt_box = [] 
+		self.c_names = []
+		self.c_scores = []
+		for i in [0, 1, 2]:
+			courtlabel_box.append(toga.Box())
+			wcourt_box.append(toga.Box())
+			lcourt_box.append(toga.Box())
+
+			court_num = "Court {}:".format(int(i + 1))
+			court_label = toga.Label(court_num, style=Pack(padding=(0,5)))
+
+			win_label = toga.Label('Winning Players:', style=Pack(padding=(0,5)))
+			loss_label = toga.Label('Losing Players:   ', style=Pack(padding=(0,5)))
+			wscore_label = toga.Label('Games: ', style=Pack(padding=(0,5)))
+			lscore_label = toga.Label('Games: ', style=Pack(padding=(0,5)))
+
+			self.c = []
+			for j in [0, 1, 2, 3]:
+				self.c.append(toga.Selection(items=players,style=Pack(flex=1)))
+				self.c[j].style.update(padding=(0,5))
+
+			self.c_names.append(self.c)
+
+			self.s = []
+			for j in [0, 1, 2, 3, 4, 5]:
+				self.s.append(toga.TextInput(style=Pack(flex=1)))
+				self.s[j].style.update(width=25, padding=(0,5))	
+
+			self.c_scores.append(self.s)
+
+
+			courtlabel_box[i].add(court_label)
+
+			wcourt_box[i].add(win_label)
+			for j in [0, 1]:
+				wcourt_box[i].add(self.c_names[i][j])
+
+			wcourt_box[i].add(wscore_label)
+			for j in [0, 1, 2]:
+				wcourt_box[i].add(self.c_scores[i][j])
+
+			lcourt_box[i].add(loss_label)
+			for j in [2, 3]:
+				lcourt_box[i].add(self.c_names[i][j])
+
+			lcourt_box[i].add(lscore_label)
+			for j in [3, 4, 5]:
+				lcourt_box[i].add(self.c_scores[i][j])
+
+		button = toga.Button(
+			'Submit',
+			on_press=self.Submission,
+			style=Pack(padding=5)
+		)
+
+		main_box.style.update(direction=COLUMN, padding_top=10)
+
+		for i in [0, 1, 2]:
+			courtlabel_box[i].style.update(direction=ROW, padding=5)
+			wcourt_box[i].style.update(direction=ROW, padding=5)
+			lcourt_box[i].style.update(direction=ROW, padding=5)
+
+			main_box.add(courtlabel_box[i])
+			main_box.add(wcourt_box[i])
+			main_box.add(lcourt_box[i])
+
+		main_box.add(button)
+
+		self.main_window = toga.MainWindow(title=self.formal_name)
+		self.main_window.content = main_box
+		self.main_window.show()
+
+	def Submission(self, widget):
+		print("successfully submitted")
+
+def main():
+	return TennisLeague()

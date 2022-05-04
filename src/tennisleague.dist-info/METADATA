@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.6
+Name: tennisleague
+Formal-Name: TennisLeague
+App-ID: com.example.tennisleague
+Version: 0.3.1
+Home-page: https://example.com/tennisleague
+Author: Greg Taeger
+Author-email: greg.taeger@gmail.com
+Summary: Tennis League manager

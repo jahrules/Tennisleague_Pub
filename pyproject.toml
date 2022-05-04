@@ -1,0 +1,54 @@
+[tool.briefcase]
+project_name = "TennisLeague"
+bundle = "com.example"
+version = "0.0.1"
+url = "https://example.com/tennisleague"
+license = "BSD license"
+author = 'Greg Taeger'
+author_email = "greg.taeger@gmail.com"
+
+[tool.briefcase.app.tennisleague]
+formal_name = "TennisLeague"
+description = "Tennis League manager"
+icon = "src/tennisleague/resources/tennisleague"
+sources = ['src/tennisleague']
+requires = [
+    'openpyxl',
+    'tennisleague'
+]
+
+
+[tool.briefcase.app.tennisleague.macOS]
+requires = [
+    'toga-cocoa>=0.3.0.dev32',
+    'std-nslog==1.0.0'
+]
+
+[tool.briefcase.app.tennisleague.linux]
+requires = [
+    'toga-gtk>=0.3.0.dev32',
+]
+system_requires = [
+    'libgirepository1.0-dev',
+    'libcairo2-dev',
+    'libpango1.0-dev',
+    'libwebkitgtk-3.0-0',
+    'gir1.2-webkit-3.0',
+]
+
+[tool.briefcase.app.tennisleague.windows]
+requires = [
+    'toga-winforms>=0.3.0.dev32',
+]
+
+# Mobile deployments
+[tool.briefcase.app.tennisleague.iOS]
+requires = [
+    'toga-iOS>=0.3.0.dev32',
+    'std-nslog==1.0.0'
+]
+
+[tool.briefcase.app.tennisleague.android]
+requires = [
+    'toga-android>=0.3.0.dev32'
+]
